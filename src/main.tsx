@@ -1,4 +1,3 @@
-import './style.css'
 import { render } from 'documentx'
 import { Store, ref } from './util'
 
