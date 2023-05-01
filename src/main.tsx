@@ -2,22 +2,94 @@ import './style.css'
 import { render } from 'documentx'
 import { Store, ref } from './util'
 
-const count = new Store(0)
+type Todo = {
+  id: number
+  text: string
+  done: boolean
+}
+
+let id = 4
+
+const initialTodos: Todo[] = [
+  { id: 1, text: 'Basic JSX', done: true },
+  { id: 1, text: 'Make Router', done: false },
+  { id: 2, text: 'Improve Types', done: false },
+]
+
+// Store is a simple state for holding state and subscribing to changes
+const todos = new Store(initialTodos)
 
 const App = () => {
+  // We can use ref to get a reference to the main element
   const el = ref()
 
-  count.sub((s) => {
-    el.target.innerText = `Count ${s}`
+  // This will re-render the todos when the state changes
+  // You can get the new state from the callback if you want
+  // store also has unsub but it's not needed here
+  todos.sub((_newState) => {
+    el.target.replaceChildren(render(<Todos todos={todos} />))
   })
+
+  // Just normal html form submission
+  function onSubmit(e: any) {
+    e.preventDefault()
+    const data = new FormData(e.target)
+    const text = data.get('todo') as string
+    todos.set((s) => {
+      // just mutate id, and the state
+      s.unshift({ id: id++, text, done: false as boolean })
+      return s
+    })
+    e.target.reset()
+  }
 
   return (
     <div>
-      <h1 ref={el}>Count {count.state}</h1>
-      <button onClick={() => count.set((s) => s - 1)}>-</button>
-      <button onClick={() => count.set((s) => s + 1)}>+</button>
+      <h1>Todos</h1>
+      <form onSubmit={onSubmit}>
+        <input type="text" name="todo" />
+        <button type="submit">Add</button>
+      </form>
+      {/* As simple as this */}
+      <main ref={el}>
+        {/* Custom components with props */}
+        <Todos todos={todos} />
+      </main>
     </div>
   )
 }
 
+// Props get passed in as usual for jsx
+const Todos = ({ todos }: { todos: Store<Todo[]> }) => {
+  return (
+    <ul>
+      {/* With the power of jsx we can map over the todos */}
+      {todos.state.map((todo) => {
+        return (
+          <li>
+            <input
+              type="checkbox"
+              checked={todo.done}
+              // Subscribe to the change event and mutate the state
+              onChange={() => (todo.done = !todo.done)}
+            />
+            <span>{todo.text}</span>
+            <button
+              onClick={() => {
+                return todos.set((s) => {
+                  s.splice(s.indexOf(todo), 1)
+                  return s
+                })
+              }}
+            >
+              Delete
+            </button>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+// render just returns a dom element, so doing this will create our app
 document.querySelector('#app')!.replaceChildren(render(<App />))

@@ -11,6 +11,10 @@ export class Store<T> {
     this.subs.push(fn)
   }
 
+  unsub(fn: (s: T) => void) {
+    this.subs = this.subs.filter((f) => f !== fn)
+  }
+
   set(state: T | ((s: T) => T)) {
     if (typeof state === 'function') {
       this.state = (state as any)(this.state)
