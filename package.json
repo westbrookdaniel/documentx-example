@@ -13,6 +13,6 @@
     "vite": "^4.3.2"
   },
   "dependencies": {
-    "documentx": "^0.2.5"
+    "documentx": "^0.2.6"
   }
 }
