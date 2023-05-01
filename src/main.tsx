@@ -1,12 +1,11 @@
-import { render } from 'documentx'
 import './style.css'
-import { Store } from './util/store'
-import { ref } from './util/ref'
+import { render } from 'documentx'
+import { Store, ref } from './util'
 
 const count = new Store(0)
 
 const App = () => {
-  let el = ref()
+  const el = ref()
 
   count.sub((s) => {
     el.target.innerText = `Count ${s}`
