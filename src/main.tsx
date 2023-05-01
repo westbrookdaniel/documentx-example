@@ -26,6 +26,9 @@ const App = () => {
   // This will re-render the todos when the state changes
   // You can get the new state from the callback if you want
   // store also has unsub but it's not needed here
+  //
+  // Manual renders means less overhead, and more fine grained control
+  // In this case we're just rerendering all of the todos when the state changes
   todos.sub((_newState) => {
     el.target.replaceChildren(render(<Todos todos={todos} />))
   })
