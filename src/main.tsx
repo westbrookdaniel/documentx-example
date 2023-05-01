@@ -19,6 +19,8 @@ const initialTodos: Todo[] = [
 // Store is a simple state for holding state and subscribing to changes
 const todos = new Store(initialTodos)
 
+// This is our main app component
+// It's just a function that returns jsx
 const App = () => {
   // We can use ref to get a reference to the main element
   const el = ref()
