@@ -53,7 +53,7 @@ const App = () => {
         <input type="text" name="todo" />
         <button type="submit">Add</button>
       </form>
-      {/* As simple as this */}
+      {/* Pass the ref defined above to get a reference to the dom element */}
       <main ref={el}>
         {/* Custom components with props */}
         <Todos todos={todos} />
