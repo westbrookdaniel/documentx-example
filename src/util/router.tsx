@@ -105,5 +105,5 @@ export const createRouter = (routes: Record<string, Route>) => {
 }
 
 export const lazy = (routeImport: () => Promise<{ default: Route }>) => {
-  return async () => await (await routeImport()).default()
+  return async () => (await routeImport()).default()
 }
