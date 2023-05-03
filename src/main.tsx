@@ -9,8 +9,8 @@ export const router = createRouter({
       <a href={`/users/${Math.floor(Math.random() * 10) + 1}`}>Random User</a>
     </div>
   ),
-  '/todos': lazy(import('./todos')),
-  '/users/:id': lazy(import('./user')),
+  '/todos': lazy(() => import('./todos')),
+  '/users/:id': lazy(() => import('./user')),
   '404': () => <h1>Not Found</h1>,
 })
 
