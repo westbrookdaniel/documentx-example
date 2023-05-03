@@ -3,6 +3,8 @@ import { createBrowserHistory } from 'history'
 import { hijackLinks } from './hijackLinks'
 import { Reference } from './ref'
 
+type Route = () => JSX.Element | Promise<JSX.Element>
+
 /**
  * Create a router
  * This router will hijack anchor tags and perform client-side routing
@@ -17,7 +19,7 @@ import { Reference } from './ref'
  *  '404': () => <h1>Not Found</h1>,
  * })
  */
-export const createRouter = (routes: Record<string, () => JSX.Element>) => {
+export const createRouter = (routes: Record<string, Route>) => {
   const history = createBrowserHistory()
   hijackLinks(history)
 
@@ -42,7 +44,7 @@ export const createRouter = (routes: Record<string, () => JSX.Element>) => {
         })
       })
       return {
-        component: routes[foundRoute || '404'](),
+        component: routes[foundRoute || '404'],
         params: () => {
           const routeParts = foundRoute!.split('/')
           const pathParts = path.split('/')
@@ -63,14 +65,45 @@ export const createRouter = (routes: Record<string, () => JSX.Element>) => {
      * @param el The element where the route component will be rendered within
      * @returns The element for the initial route
      */
-    bind: (el: Reference | { target: HTMLElement }) => {
-      history.listen(() => {
+    bind: (
+      el: Reference | { target: HTMLElement },
+      options?: {
+        loading?: () => JSX.Element
+        error?: (err: unknown) => JSX.Element
+      }
+    ) => {
+      const loading = options?.loading || (() => null)
+      const error =
+        options?.error ||
+        ((err: unknown) => {
+          throw err
+        })
+
+      history.listen(async () => {
         const route = router.currentMatch()
-        el.target.replaceChildren(render(route.component))
+        el.target.replaceChildren(render(await route.component()))
       })
-      return router.currentMatch().component
+
+      const routeEl = router.currentMatch().component()
+
+      if (routeEl instanceof Promise) {
+        routeEl
+          .then((r) => {
+            el.target.replaceChildren(render(r))
+          })
+          .catch((c) => {
+            el.target.replaceChildren(render(error(c)))
+          })
+        return loading()
+      } else {
+        return routeEl
+      }
     },
   }
 
   return router
+}
+
+export const lazy = (routeImport: Promise<{ default: Route }>) => {
+  return async () => await (await routeImport).default()
 }

@@ -12,7 +12,7 @@ const getUser = async (id: string) => {
   return (await response.json()) as User
 }
 
-export const UserPage = () => {
+export default function UserPage() {
   const id = router.params().id
   const el = ref()
 

@@ -20,7 +20,7 @@ const todos = new Store(initialTodos)
 
 // This is our main todos component
 // It's just a function that returns jsx
-export const Todos = () => {
+export default function Todos() {
   // We can use ref to get a reference to the main element
   const el = ref()
 

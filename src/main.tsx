@@ -1,7 +1,5 @@
 import { render } from 'documentx'
-import { ref, createRouter } from './util'
-import { Todos } from './todos'
-import { UserPage } from './user'
+import { ref, createRouter, lazy } from './util'
 
 export const router = createRouter({
   '/': () => (
@@ -11,14 +9,17 @@ export const router = createRouter({
       <a href={`/users/${Math.floor(Math.random() * 10) + 1}`}>Random User</a>
     </div>
   ),
-  '/todos': () => <Todos />,
-  '/users/:id': () => <UserPage />,
+  '/todos': lazy(import('./todos')),
+  '/users/:id': lazy(import('./user')),
   '404': () => <h1>Not Found</h1>,
 })
 
 const App = () => {
   const el = ref()
-  const initialRoute = router.bind(el)
+  const initialRoute = router.bind(el, {
+    loading: () => <h1>Loading...</h1>,
+    error: (err) => <h1>Error: {err}</h1>,
+  })
 
   return (
     <div>
