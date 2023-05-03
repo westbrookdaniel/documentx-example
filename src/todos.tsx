@@ -1,5 +1,6 @@
 import { render } from 'documentx'
 import { Store, ref } from './util'
+import { renderAsync } from './util/renderAsync'
 
 type Todo = {
   id: number
@@ -78,6 +79,7 @@ const TodoItems = ({ todos }: { todos: Store<Todo[]> }) => {
               onChange={() => (todo.done = !todo.done)}
             />
             <span>{todo.text}</span>
+            <External id={todo.id} />
             <button
               onClick={() => {
                 return todos.set((s) => {
@@ -92,5 +94,34 @@ const TodoItems = ({ todos }: { todos: Store<Todo[]> }) => {
         )
       })}
     </ul>
+  )
+}
+
+const cache = new Map()
+
+const External = ({ id }: { id: number }) => {
+  const el = ref()
+
+  const initial = renderAsync(el, {
+    loading: () => <span>Loading...</span>,
+    error: (err) => <span>Error: {JSON.stringify(err)}</span>,
+    data: async () => {
+      let data = cache.get(id)
+      if (!data) {
+        const res = await fetch(
+          `https://jsonplaceholder.typicode.com/todos/${id}`
+        )
+        const d = await res.json()
+        cache.set(id, d)
+        data = d
+      }
+      return <span>{data.title}</span>
+    },
+  })
+
+  return (
+    <span style="margin-left: 4px; color: #777" ref={el}>
+      {initial}
+    </span>
   )
 }

@@ -12,9 +12,11 @@ export const renderAsync = (
   options
     .data()
     .then((data) => {
+      if (!('target' in el)) throw new Error('Invalid reference')
       el.target.replaceChildren(render(data))
     })
     .catch((err) => {
+      if (!('target' in el)) throw new Error('Invalid reference')
       el.target.replaceChildren(render(options.error(err)))
     })
   return options.loading()
