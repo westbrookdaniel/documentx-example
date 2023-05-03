@@ -1,34 +1,18 @@
 import { render } from 'documentx'
+import { ref, createRouter } from './util'
 import { Todos } from './todos'
-import { hijackLinks } from './util/hijackLinks'
-import { createBrowserHistory } from 'history'
-import { ref } from './util'
 import { UserPage } from './user'
 
-const routes = {
+export const router = createRouter({
   '/': () => <h1>Home</h1>,
   '/todos': () => <Todos />,
   '/users/:id': () => <UserPage />,
-}
-
-const NotFound = () => <h1>Not Found</h1>
+  '404': () => <h1>Not Found</h1>,
+})
 
 const App = () => {
   const el = ref()
-
-  const history = createBrowserHistory()
-  hijackLinks(history)
-
-  const getRouteElement = () => {
-    const path = history.location.pathname
-    const Route = routes[path as keyof typeof routes] || NotFound
-    return <Route />
-  }
-
-  history.listen(() => {
-    const route = getRouteElement()
-    el.target.replaceChildren(render(route))
-  })
+  const initialRoute = router.bind(el)
 
   return (
     <div>
@@ -37,7 +21,7 @@ const App = () => {
         <a href="/todos">Todos</a>
         <a href="/foo">Other</a>
       </nav>
-      <div ref={el}>{getRouteElement()}</div>
+      <div ref={el}>{initialRoute}</div>
     </div>
   )
 }

@@ -1,36 +1,32 @@
-export const UserPage = () => {
-  const user = {
-    id: 1,
-    name: 'Leanne Graham',
-    username: 'Bret',
-    email: 'Sincere@april.biz',
-    address: {
-      street: 'Kulas Light',
-      suite: 'Apt. 556',
-      city: 'Gwenborough',
-      zipcode: '92998-3874',
-      geo: {
-        lat: '-37.3159',
-        lng: '81.1496',
-      },
-    },
-    phone: '1-770-736-8031 x56442',
-    website: 'hildegard.org',
-    company: {
-      name: 'Romaguera-Crona',
-      catchPhrase: 'Multi-layered client-server neural-net',
-      bs: 'harness real-time e-markets',
-    },
-  }
+import { router } from './main'
+import { ref } from './util'
+import { bindAsync } from './util/bindAsync'
 
-  return (
-    <div>
-      <h1>{user.name}</h1>
-      <p>{user.email}</p>
-      <p>{user.phone}</p>
-      <p>{user.website}</p>
-    </div>
+const getUser = async (id: string) => {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/users/${id}`
   )
+  return (await response.json()) as User
+}
+
+export const UserPage = () => {
+  const id = router.params().id
+  const el = ref()
+
+  const initial = bindAsync(el, getUser(id), {
+    loading: () => <h1>Loading...</h1>,
+    error: (err) => <h1>Error: {err.message}</h1>,
+    data: (user) => (
+      <div>
+        <h1>{user.name}</h1>
+        <p>{user.email}</p>
+        <p>{user.phone}</p>
+        <p>{user.website}</p>
+      </div>
+    ),
+  })
+
+  return <div ref={el}>{initial}</div>
 }
 
 type User = {
