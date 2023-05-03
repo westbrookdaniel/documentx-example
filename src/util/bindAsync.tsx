@@ -17,5 +17,5 @@ export const bindAsync = <T,>(
     .catch((err) => {
       el.target.replaceChildren(render(options.error(err)))
     })
-  return render(options.loading())
+  return options.loading()
 }
