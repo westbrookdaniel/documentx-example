@@ -6,17 +6,16 @@ export const bindAsync = <T,>(
   promise: Promise<T>,
   options: {
     loading: () => JSX.Element
-    error: (err: Error) => JSX.Element
+    error: (err: unknown) => JSX.Element
     data: (data: T) => JSX.Element
   }
 ) => {
-  promise.then(
-    (data) => {
+  promise
+    .then((data) => {
       el.target.replaceChildren(render(options.data(data)))
-    },
-    (err) => {
+    })
+    .catch((err) => {
       el.target.replaceChildren(render(options.error(err)))
-    }
-  )
+    })
   return render(options.loading())
 }

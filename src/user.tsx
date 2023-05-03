@@ -15,7 +15,7 @@ export const UserPage = () => {
 
   const initial = bindAsync(el, getUser(id), {
     loading: () => <h1>Loading...</h1>,
-    error: (err) => <h1>Error: {err.message}</h1>,
+    error: (err) => <h1>Error: {JSON.stringify(err)}</h1>,
     data: (user) => (
       <div>
         <h1>{user.name}</h1>
