@@ -16,17 +16,20 @@ export default function UserPage() {
   const id = router.params().id
   const el = ref()
 
-  const initial = renderAsync(el, getUser(id), {
+  const initial = renderAsync(el, {
     loading: () => <h1>Loading...</h1>,
     error: (err) => <h1>Error: {JSON.stringify(err)}</h1>,
-    data: (user) => (
-      <div>
-        <h1>{user.name}</h1>
-        <p>{user.email}</p>
-        <p>{user.phone}</p>
-        <p>{user.website}</p>
-      </div>
-    ),
+    data: async () => {
+      const user = await getUser(id)
+      return (
+        <div>
+          <h1>{user.name}</h1>
+          <p>{user.email}</p>
+          <p>{user.phone}</p>
+          <p>{user.website}</p>
+        </div>
+      )
+    },
   })
 
   return <div ref={el}>{initial}</div>
