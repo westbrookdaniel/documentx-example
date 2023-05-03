@@ -1,7 +1,7 @@
 import { render } from 'documentx'
 import { Reference } from './ref'
 
-export const bindAsync = <T,>(
+export const renderAsync = <T,>(
   el: Reference | { target: HTMLElement },
   promise: Promise<T>,
   options: {

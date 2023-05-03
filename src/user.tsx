@@ -1,6 +1,6 @@
 import { router } from './main'
 import { ref } from './util'
-import { bindAsync } from './util/bindAsync'
+import { renderAsync } from './util/renderAsync'
 
 const getUser = async (id: string) => {
   const response = await fetch(
@@ -16,7 +16,7 @@ export const UserPage = () => {
   const id = router.params().id
   const el = ref()
 
-  const initial = bindAsync(el, getUser(id), {
+  const initial = renderAsync(el, getUser(id), {
     loading: () => <h1>Loading...</h1>,
     error: (err) => <h1>Error: {JSON.stringify(err)}</h1>,
     data: (user) => (
