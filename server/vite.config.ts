@@ -27,9 +27,8 @@ const documentxPlugin = async (): Promise<PluginOption[]> => {
             const html = renderToString(App({ children: Component({}) }))
             // get index.html
             let template = fs.readFileSync(`${__dirname}/index.html`, 'utf-8')
-            template.replace('<!--ssr-outlet-->', html)
+            template = template.replace('<!--ssr-outlet-->', html)
             // send html
-            console.log(template)
             res.end(template)
           })
         }

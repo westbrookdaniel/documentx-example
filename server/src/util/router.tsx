@@ -89,7 +89,7 @@ export const createRouter = (routes: Record<string, Route>) => {
 
       history.listen(async () => {
         const route = router.currentMatch()
-        getSafeTarget(el).replaceChildren?.(render(await route.component()))
+        getTarget(el).replaceChildren?.(render(await route.component()))
       })
 
       const routeEl = router.currentMatch().component()
@@ -97,10 +97,10 @@ export const createRouter = (routes: Record<string, Route>) => {
       if (routeEl instanceof Promise) {
         routeEl
           .then((r) => {
-            getSafeTarget(el).replaceChildren?.(render(r))
+            getTarget(el).replaceChildren?.(render(r))
           })
           .catch((c) => {
-            getSafeTarget(el).replaceChildren?.(render(error(c)))
+            getTarget(el).replaceChildren?.(render(error(c)))
           })
         return loading()
       } else {
@@ -112,7 +112,9 @@ export const createRouter = (routes: Record<string, Route>) => {
   return router
 }
 
-const getSafeTarget = (e: Reference | { target: HTMLElement }): any => {
+const getTarget = (
+  e: Reference | { target: HTMLElement }
+): Partial<HTMLElement> => {
   if (typeof document === 'undefined') return {}
   return e.target
 }
