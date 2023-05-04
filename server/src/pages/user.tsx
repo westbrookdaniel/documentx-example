@@ -1,4 +1,4 @@
-import { router } from './main'
+import { router } from '../main'
 
 const getUser = async (id: string) => {
   const response = await fetch(

@@ -3,18 +3,21 @@ lockfileVersion: '6.0'
 dependencies:
   documentx:
     specifier: ^0.2.6
-    version: 0.2.6
+    version: link:../../../../framework/packages/documentx
   history:
     specifier: ^5.3.0
     version: 5.3.0
 
 devDependencies:
+  '@types/node':
+    specifier: ^18.16.3
+    version: 18.16.3
   typescript:
     specifier: ^5.0.2
     version: 5.0.4
   vite:
     specifier: ^4.3.2
-    version: 4.3.4
+    version: 4.3.4(@types/node@18.16.3)
 
 packages:
 
@@ -223,9 +226,9 @@ packages:
     dev: true
     optional: true
 
-  /documentx@0.2.6:
-    resolution: {integrity: sha512-YJMK9kRxAf/by3sU4EVbO540Lv/reoXZliA4jJZO4b46AJBysfLLk5b7DaunnsgXWzz0/zRSlebAnt2IFxIYaA==}
-    dev: false
+  /@types/node@18.16.3:
+    resolution: {integrity: sha512-OPs5WnnT1xkCBiuQrZA4+YAV4HEJejmHneyraIaxsbev5yCEr6KMwINNFP9wQeFIw8FWcoTqF3vQsa5CDaI+8Q==}
+    dev: true
 
   /esbuild@0.17.18:
     resolution: {integrity: sha512-z1lix43jBs6UKjcZVKOw2xx69ffE2aG0PygLL5qJ9OS/gy0Ewd1gW/PUQIOIQGXBHWNywSc0floSKoMFF8aK2w==}
@@ -313,7 +316,7 @@ packages:
     hasBin: true
     dev: true
 
-  /vite@4.3.4:
+  /vite@4.3.4(@types/node@18.16.3):
     resolution: {integrity: sha512-f90aqGBoxSFxWph2b39ae2uHAxm5jFBBdnfueNxZAT1FTpM13ccFQExCaKbR2xFW5atowjleRniQ7onjJ22QEg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -338,6 +341,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 18.16.3
       esbuild: 0.17.18
       postcss: 8.4.23
       rollup: 3.21.4

@@ -1,5 +1,5 @@
 import { render } from 'documentx'
-import { createBrowserHistory } from 'history'
+import { History, createBrowserHistory, createMemoryHistory } from 'history'
 import { hijackLinks } from './hijackLinks'
 import { Reference } from './ref'
 
@@ -8,6 +8,8 @@ type Route = () => JSX.Element | Promise<JSX.Element>
 /**
  * Create a router
  * This router will hijack anchor tags and perform client-side routing
+ *
+ * Supports being run during SSR
  *
  * @param routes Map of routes to components
  *
@@ -20,8 +22,14 @@ type Route = () => JSX.Element | Promise<JSX.Element>
  * })
  */
 export const createRouter = (routes: Record<string, Route>) => {
-  const history = createBrowserHistory()
-  hijackLinks(history)
+  let history: History
+
+  if (typeof document === 'undefined') {
+    history = createMemoryHistory()
+  } else {
+    history = createBrowserHistory()
+    hijackLinks(history)
+  }
 
   const router = {
     history,
@@ -81,7 +89,7 @@ export const createRouter = (routes: Record<string, Route>) => {
 
       history.listen(async () => {
         const route = router.currentMatch()
-        el.target.replaceChildren(render(await route.component()))
+        getSafeTarget(el).replaceChildren?.(render(await route.component()))
       })
 
       const routeEl = router.currentMatch().component()
@@ -89,10 +97,10 @@ export const createRouter = (routes: Record<string, Route>) => {
       if (routeEl instanceof Promise) {
         routeEl
           .then((r) => {
-            el.target.replaceChildren(render(r))
+            getSafeTarget(el).replaceChildren?.(render(r))
           })
           .catch((c) => {
-            el.target.replaceChildren(render(error(c)))
+            getSafeTarget(el).replaceChildren?.(render(error(c)))
           })
         return loading()
       } else {
@@ -102,6 +110,11 @@ export const createRouter = (routes: Record<string, Route>) => {
   }
 
   return router
+}
+
+const getSafeTarget = (e: Reference | { target: HTMLElement }): any => {
+  if (typeof document === 'undefined') return {}
+  return e.target
 }
 
 export const lazy = (routeImport: () => Promise<{ default: Route }>) => {
