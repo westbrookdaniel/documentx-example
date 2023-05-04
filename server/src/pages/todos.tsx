@@ -1,6 +1,6 @@
 import { render } from 'documentx'
-import { Store, ref } from './util'
-import { renderAsync } from './util/renderAsync'
+import { Store, ref } from '../util'
+import { renderAsync } from '../util/renderAsync'
 
 type Todo = {
   id: number

@@ -2,6 +2,7 @@ import { render } from 'documentx'
 import { History, createBrowserHistory, createMemoryHistory } from 'history'
 import { hijackLinks } from './hijackLinks'
 import { Reference } from './ref'
+import { getTarget } from './getTarget'
 
 type Route = () => JSX.Element | Promise<JSX.Element>
 
@@ -110,13 +111,6 @@ export const createRouter = (routes: Record<string, Route>) => {
   }
 
   return router
-}
-
-const getTarget = (
-  e: Reference | { target: HTMLElement }
-): Partial<HTMLElement> => {
-  if (typeof document === 'undefined') return {}
-  return e.target
 }
 
 export const lazy = (routeImport: () => Promise<{ default: Route }>) => {

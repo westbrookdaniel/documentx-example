@@ -14,7 +14,8 @@ type InjectedProps = {
 
 export default function App({ children }: InjectedProps) {
   const el = ref()
-  const initialRoute = router.bind(el, {
+
+  router.bind(el, {
     loading: () => <h1>Loading...</h1>,
     error: (err) => <h1>Error: {err}</h1>,
   })
@@ -26,11 +27,12 @@ export default function App({ children }: InjectedProps) {
         <a href="/todos">Todos</a>
         <a href="/foo">Other</a>
       </nav>
-      <div ref={el}>{children || initialRoute}</div>
+      <div ref={el}>{children}</div>
     </div>
   )
 }
 
 if (typeof document !== 'undefined') {
+  // TODO: Hydrate
   document.querySelector('#app')!.replaceChildren(render(<App />))
 }
