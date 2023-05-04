@@ -26,8 +26,8 @@ const documentxPlugin = async (): Promise<PluginOption[]> => {
 
             let html: string
 
-            // render 404 html
             if (!fs.existsSync(filePath)) {
+              // render 404 html
               const notFoundPath = `${__dirname}/src/pages/404.tsx`
               if (!fs.existsSync(notFoundPath)) next()
               const { default: NotFound } = await server.ssrLoadModule(
