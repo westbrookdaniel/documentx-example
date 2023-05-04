@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   documentx:
-    specifier: ^0.2.6
-    version: 0.2.6
+    specifier: ^0.3.0
+    version: 0.3.0
   history:
     specifier: ^5.3.0
     version: 5.3.0
@@ -13,10 +13,10 @@ devDependencies:
     specifier: ^18.16.3
     version: 18.16.3
   typescript:
-    specifier: ^5.0.2
+    specifier: ^5.0.4
     version: 5.0.4
   vite:
-    specifier: ^4.3.2
+    specifier: ^4.3.4
     version: 4.3.4(@types/node@18.16.3)
 
 packages:
@@ -230,8 +230,8 @@ packages:
     resolution: {integrity: sha512-OPs5WnnT1xkCBiuQrZA4+YAV4HEJejmHneyraIaxsbev5yCEr6KMwINNFP9wQeFIw8FWcoTqF3vQsa5CDaI+8Q==}
     dev: true
 
-  /documentx@0.2.6:
-    resolution: {integrity: sha512-YJMK9kRxAf/by3sU4EVbO540Lv/reoXZliA4jJZO4b46AJBysfLLk5b7DaunnsgXWzz0/zRSlebAnt2IFxIYaA==}
+  /documentx@0.3.0:
+    resolution: {integrity: sha512-wIy98BXkd3jueGbRr/qfVWwTAQvYrAH6yCfaARMHDArPC/UaxNICjKOIMNtBJUV+lpzBwBVbFd5jvHATtxk4SA==}
     dev: false
 
   /esbuild@0.17.18:
