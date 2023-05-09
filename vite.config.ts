@@ -7,13 +7,6 @@ import * as vite from 'vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-function ensureExists(path: string) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true })
-  }
-  return path
-}
-
 const documentxPlugin = async (): Promise<PluginOption[]> => {
   return [
     {
@@ -58,26 +51,6 @@ const documentxPlugin = async (): Promise<PluginOption[]> => {
             res.end(template)
           })
         }
-      },
-      config(config) {
-        return {
-          ...config,
-          build: {
-            ...config.build,
-            outDir: ensureExists(
-              path.join(path.resolve(__dirname, 'dist'), 'client')
-            ),
-          },
-        }
-      },
-      writeBundle: {
-        sequential: true,
-        handler() {
-          // prerender inner html for each route into dist/prerendered
-          // and create simple file server
-          // that replaces <!--ssr-outlet--> in dist/client/index.html with prerendered html
-          // add that node server into the root of dist to be deployed
-        },
       },
     },
   ]
