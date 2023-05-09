@@ -33,6 +33,14 @@ export default function App({ children }: InjectedProps) {
 }
 
 if (typeof document !== 'undefined') {
-  // TODO: Hydrate
+  /**
+   * Things TODO:
+   *
+   * 1. SSR
+   * 2. Hydration
+   * 3. Async components (Suspense)
+   * 4. Error boundaries
+   *
+   */
   document.querySelector('#app')!.replaceChildren(render(<App />))
 }
