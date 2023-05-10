@@ -37,9 +37,10 @@ if (typeof document !== 'undefined') {
    * Things TODO:
    *
    * 1. SSR
-   * 2. Hydration
-   * 3. Async components (Suspense)
-   * 4. Error boundaries
+   * 2. Fragments
+   * 3. Hydration
+   * 4. Async components (Suspense)
+   * 5. Error boundaries
    *
    */
   document.querySelector('#app')!.replaceChildren(render(<App />))
