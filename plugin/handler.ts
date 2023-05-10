@@ -5,8 +5,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 import url from 'node:url'
 
-// dirname from running
-
 // @ts-expect-error
 import _server from '/virtual:vite-dev-server'
 const server = _server as ViteDevServer

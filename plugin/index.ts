@@ -3,7 +3,6 @@ import path from 'node:path'
 import url from 'node:url'
 import crypto from 'node:crypto'
 
-// dirname for here
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 export default function documentxserver(): Plugin[] {
