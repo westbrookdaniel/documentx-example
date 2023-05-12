@@ -13,9 +13,9 @@ export default function documentxserver(): Plugin[] {
       enforce: 'pre',
       async resolveId(id) {
         if (id === '/virtual:documentx-handler') {
-          return path.resolve(__dirname, 'handler')
+          return this.resolve(path.resolve(__dirname, 'handler'))
         } else if (id === '/virtual:documentx-server') {
-          return path.resolve(__dirname, 'entry.mjs').replace(/\\/g, '/')
+          return path.resolve(__dirname, 'entry.mjs')
         }
       },
     },
@@ -29,16 +29,26 @@ export default function documentxserver(): Plugin[] {
             include: [],
           },
         }
-        if (env.command === 'build' && config.build?.ssr) {
-          return {
-            ...common,
-            build: {
-              rollupOptions: {
-                input: {
-                  index: '/virtual:documentx-server',
+        if (env.command === 'build') {
+          if (config.build?.ssr) {
+            return {
+              ...common,
+              build: {
+                rollupOptions: {
+                  input: {
+                    index: '/virtual:documentx-server',
+                  },
                 },
+                emptyOutDir: false,
               },
-            },
+            }
+          } else {
+            return {
+              ...common,
+              build: {
+                outDir: 'dist/client',
+              },
+            }
           }
         }
         return common
@@ -80,8 +90,6 @@ function exposeDevServer(): Plugin {
   let viteDevServer: ViteDevServer | undefined
   let globalSymbol: string
 
-  const getModule = () => `export default ${globalSymbol}`
-
   return {
     name: 'documentx-expose-dev-server',
     enforce: 'pre',
@@ -95,15 +103,28 @@ function exposeDevServer(): Plugin {
       delete (global as any)[globalSymbol]
     },
 
+    resolveId(id) {
+      if (id === '/virtual:vite-dev-server') {
+        return id
+      }
+    },
+
     load(id, options) {
-      if (id === '/virtual:vite-dev-server' && dev && options?.ssr) {
-        return getModule()
+      if (id === '/virtual:vite-dev-server') {
+        return dev && options?.ssr
+          ? `export default ${globalSymbol}`
+          : 'export default undefined'
       }
     },
 
     config(_config, env) {
       dev = env.command === 'serve'
       return {
+        ssr: {
+          optimizeDeps: {
+            exclude: ['/virtual:vite-dev-server'],
+          },
+        },
         optimizeDeps: {
           exclude: ['/virtual:vite-dev-server'],
         },

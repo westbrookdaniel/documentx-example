@@ -1,18 +1,16 @@
-import { IncomingMessage, ServerResponse } from 'http'
-import { Connect, ViteDevServer } from 'vite'
+import { ViteDevServer } from 'vite'
 import { renderToString } from 'documentx'
 import fs from 'node:fs'
-import path from 'node:path'
-import url from 'node:url'
+import { Request, Response, NextFunction } from 'express'
 
 // @ts-expect-error
 import _server from '/virtual:vite-dev-server'
 const server = _server as ViteDevServer
 
 export default async function handler(
-  req: Connect.IncomingMessage,
-  res: ServerResponse,
-  next: Connect.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) {
   const path = req.originalUrl
   const filename = path === '/' ? '/index' : path
