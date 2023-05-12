@@ -38,8 +38,6 @@ async function main() {
     ? await vite.ssrLoadModule('/src/main.tsx')
     : await import(path.resolve(__dirname, './main.js'))
 
-  const manifest = isDev ? global.documentxssr : { css: [] }
-
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
 
@@ -57,13 +55,17 @@ async function main() {
       const appHtml = await renderToString({ type: App, props: {} })
       html = html.replace('<!--outlet-->', appHtml.join(''))
 
-      // inject head assets
-      html = html.replace(
-        '<!--head-->',
-        manifest.css
-          .map((p) => `<link rel="stylesheet" href="${p}">`)
-          .join('\n')
-      )
+      if (isDev) {
+        html = html.replace(
+          '<!--head-->',
+          global.documentxssr.css
+            .map((p) => `<link rel="stylesheet" href="${p}">`)
+            .join('\n')
+        )
+      }
+
+      // minify html
+      html = html.replace(/<!--(.*?)-->|\s\B/gm, '')
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
