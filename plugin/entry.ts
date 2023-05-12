@@ -1,4 +1,4 @@
-import handler from '/virtual:documentx-handler'
+import handler from './handler'
 import express from 'express'
 
 const app = express()
