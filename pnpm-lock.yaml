@@ -5,11 +5,11 @@ dependencies:
     specifier: ^3.1.5
     version: 3.1.5
   documentx:
-    specifier: ^0.7.0
-    version: 0.7.0
+    specifier: ^0.7.2
+    version: 0.7.2
   documentx-ssr:
-    specifier: ^2.0.0
-    version: 2.0.0(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.0)(express@4.18.2)
+    specifier: ^2.0.3
+    version: 2.0.3(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.2)(express@4.18.2)
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -379,17 +379,17 @@ packages:
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
     dev: false
 
-  /documentx-ssr@2.0.0(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.0)(express@4.18.2):
-    resolution: {integrity: sha512-d6Y/S99BxpeOMBX50C+ve4etgDJO2/WrQmdT7fBSn1GFT6NQ7Cwy1UqmElkwV4UY4uXWvRfqz5XzymHPEasd2w==}
+  /documentx-ssr@2.0.3(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.2)(express@4.18.2):
+    resolution: {integrity: sha512-narNJ0N23Ssmq7jYAjr78KYvssvlKwweMpx6GmRNFMQLAvxYLU3WJOYNCrdm73b4Jdu42fGs+4WdA9R23fsy2w==}
     hasBin: true
     peerDependencies:
       cross-fetch: ^3.1.5
-      documentx: 0.7.0
+      documentx: 0.7.2
       express: ^4.18.2
     dependencies:
       cac: 6.7.14
       cross-fetch: 3.1.5
-      documentx: 0.7.0
+      documentx: 0.7.2
       express: 4.18.2
       vite: 4.3.5(@types/node@18.16.8)
     transitivePeerDependencies:
@@ -401,8 +401,8 @@ packages:
       - terser
     dev: false
 
-  /documentx@0.7.0:
-    resolution: {integrity: sha512-jTvq6wD19SfbOSmOq++kC1B/tqg1mmVMo5EsUXDANn+QN+L4ociNsKg35m0ivmcLSILqJqAR2hXdyV56Hi9gvw==}
+  /documentx@0.7.2:
+    resolution: {integrity: sha512-xB/8tmn1NE0BqM/y1jusTFPn+rmDOr9inXMSubF9IzkrbTzWk6UY8BPwVZN+2d7EMU06kQMa+rlfO6UHLPYqWA==}
     dependencies:
       history: 5.3.0
     dev: false

@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "cross-fetch": "^3.1.5",
-    "documentx": "^0.7.0",
-    "documentx-ssr": "^2.0.0",
+    "documentx": "^0.7.2",
+    "documentx-ssr": "^2.0.3",
     "express": "^4.18.2",
     "history": "^5.3.0"
   }
