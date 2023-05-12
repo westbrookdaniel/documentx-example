@@ -11,7 +11,6 @@ export const router = createRouter({
 
 export default function App() {
   const el = ref()
-
   const initalEl = router.bind(el, {
     loading: () => <h1>Loading...</h1>,
     error: (err) => <h1>Error: {err}</h1>,
@@ -33,12 +32,12 @@ if (typeof document !== 'undefined') {
   /**
    * Things TODO:
    *
-   * 1. SSR
-   * 2. Fragments
-   * 3. Hydration
-   * 4. Async components (Suspense)
-   * 5. Error boundaries
-   *
+   * 1. Async components (Suspense)
+   * 2. Error boundaries
+   * 3. SSR
+   * 4. Hydration
    */
-  document.querySelector('#app')!.replaceChildren(render(<App />))
+  render(<App />).then((children) => {
+    document.querySelector('#app')!.replaceChildren(...children)
+  })
 }

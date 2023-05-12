@@ -12,11 +12,13 @@ export const renderAsync = (
 ) => {
   options
     .data()
-    .then((data) => {
-      getTarget(el).replaceChildren?.(render(data))
+    .then((d) => render(d))
+    .then((children) => {
+      getTarget(el).replaceChildren?.(...children)
     })
-    .catch((err) => {
-      getTarget(el)?.replaceChildren?.(render(options.error(err)))
+    .catch(async (err) => {
+      const children = await render(options.error(err))
+      getTarget(el)?.replaceChildren?.(...children)
     })
   return options.loading()
 }

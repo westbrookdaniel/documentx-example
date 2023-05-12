@@ -1,6 +1,5 @@
 import { render } from 'documentx'
 import { Store, ref } from '../util'
-import { renderAsync } from '../util/renderAsync'
 
 type Todo = {
   id: number
@@ -31,8 +30,13 @@ export default function Todos() {
   //
   // Manual renders means less overhead, and more fine grained control
   // In this case we're just rerendering all of the todos when the state changes
-  todos.sub((_newState) => {
-    el.target.replaceChildren(render(<TodoItems todos={todos} />))
+  //
+  // render is async because components can be async!
+  // children is also always an array of elements (or text nodes)
+  // for making working with fragments easier
+  todos.sub(async (_newState) => {
+    const children = await render(<TodoItems todos={todos} />)
+    el.target.replaceChildren(...children)
   })
 
   // Just normal html form submission
@@ -99,29 +103,18 @@ const TodoItems = ({ todos }: { todos: Store<Todo[]> }) => {
 
 const cache = new Map()
 
-const External = ({ id }: { id: number }) => {
-  const el = ref()
+/**
+ * An async component that fetches data from an external source
+ * This will be awaited during render
+ */
+const External = async ({ id }: { id: number }) => {
+  let data = cache.get(id)
+  if (!data) {
+    const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    const d = await res.json()
+    cache.set(id, d)
+    data = d
+  }
 
-  const initial = renderAsync(el, {
-    loading: () => <span>Loading...</span>,
-    error: (err) => <span>Error: {JSON.stringify(err)}</span>,
-    data: async () => {
-      let data = cache.get(id)
-      if (!data) {
-        const res = await fetch(
-          `https://jsonplaceholder.typicode.com/todos/${id}`
-        )
-        const d = await res.json()
-        cache.set(id, d)
-        data = d
-      }
-      return <span>{data.title}</span>
-    },
-  })
-
-  return (
-    <span style="margin-left: 4px; color: #777" ref={el}>
-      {initial}
-    </span>
-  )
+  return <span style="margin-left: 4px; color: #777">{data.title}</span>
 }

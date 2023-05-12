@@ -90,18 +90,21 @@ export const createRouter = (routes: Record<string, Route>) => {
 
       history.listen(async () => {
         const route = router.currentMatch()
-        getTarget(el).replaceChildren?.(render(await route.component()))
+        const children = await render(await route.component())
+        getTarget(el).replaceChildren?.(...children)
       })
 
       const routeEl = router.currentMatch().component()
 
       if (routeEl instanceof Promise) {
         routeEl
-          .then((r) => {
-            getTarget(el).replaceChildren?.(render(r))
+          .then((r) => render(r))
+          .then((children) => {
+            getTarget(el).replaceChildren?.(...children)
           })
-          .catch((c) => {
-            getTarget(el).replaceChildren?.(render(error(c)))
+          .catch(async (c) => {
+            const children = await render(error(c))
+            getTarget(el).replaceChildren?.(...children)
           })
         return loading()
       } else {

@@ -1,5 +1,12 @@
 import { router } from '../main'
 
+type User = {
+  id: number
+  name: string
+  username: string
+  email: string
+}
+
 const getUser = async (id: string) => {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/users/${id}`
@@ -15,35 +22,10 @@ export default async function UserPage() {
   const id = router.params().id
   const user = await getUser(id)
   return (
-    <div>
+    <>
       <h1>{user.name}</h1>
       <p>{user.email}</p>
-      <p>{user.phone}</p>
-      <p>{user.website}</p>
-    </div>
+      <p>{user.username}</p>
+    </>
   )
-}
-
-type User = {
-  id: number
-  name: string
-  username: string
-  email: string
-  address: {
-    street: string
-    suite: string
-    city: string
-    zipcode: string
-    geo: {
-      lat: string
-      lng: string
-    }
-  }
-  phone: string
-  website: string
-  company: {
-    name: string
-    catchPhrase: string
-    bs: string
-  }
 }
