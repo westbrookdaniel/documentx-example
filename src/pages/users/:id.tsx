@@ -18,7 +18,6 @@ const getUser = async (id: string) => {
 }
 
 export default async function UserPage() {
-  if (typeof document === 'undefined') return <div>Loading...</div>
   const id = router.params().id
   const user = await getUser(id)
   return (
