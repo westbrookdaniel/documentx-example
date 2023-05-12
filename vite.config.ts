@@ -3,7 +3,7 @@ import { Plugin, defineConfig } from 'vite'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
-function plugin(): Plugin[] {
+function documentxssr(): Plugin[] {
   global.documentxssr = {
     css: [],
   }
@@ -46,5 +46,5 @@ function plugin(): Plugin[] {
 }
 
 export default defineConfig({
-  plugins: [plugin()],
+  plugins: [documentxssr()],
 })

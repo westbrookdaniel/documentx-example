@@ -26,7 +26,12 @@ async function main() {
   if (isDev) {
     app.use(vite.middlewares)
   } else {
-    app.use(express.static(__dirname))
+    app.use(
+      '/assets',
+      express.static(path.resolve(__dirname, './assets'), {
+        index: false,
+      })
+    )
   }
 
   const mainModule = isDev
