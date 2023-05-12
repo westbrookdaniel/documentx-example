@@ -1,7 +1,6 @@
 import './style.css'
 import { render } from 'documentx'
-import { ref, createRouter } from './util'
-import { fileRouter } from './util/fileRouter'
+import { ref, createRouter, fileRouter } from 'documentx/util'
 
 export const router = createRouter(
   fileRouter(import.meta.glob('./pages/**/*.tsx'), './pages')

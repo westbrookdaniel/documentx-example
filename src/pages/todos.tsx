@@ -1,5 +1,5 @@
 import { render } from 'documentx'
-import { Store, ref } from '../util'
+import { Store, ref } from 'documentx/util'
 
 type Todo = {
   id: number
