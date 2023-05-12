@@ -1,4 +1,4 @@
-import { router } from '../main'
+import { router } from '../../main'
 
 type User = {
   id: number

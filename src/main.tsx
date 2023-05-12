@@ -1,18 +1,16 @@
 import './style.css'
 import { render } from 'documentx'
-import { ref, createRouter, lazy } from './util'
+import { ref, createRouter } from './util'
+import { fileRouter } from './util/fileRouter'
 
-export const router = createRouter({
-  '/': lazy(() => import('./pages')),
-  '/todos': lazy(() => import('./pages/todos')),
-  '/users/:id': lazy(() => import('./pages/user')),
-  '404': lazy(() => import('./pages/404')),
-})
+export const router = createRouter(
+  fileRouter(import.meta.glob('./pages/**/*.tsx'), './pages')
+)
 
-export default function App() {
+export default async function App() {
   const el = ref()
-  const initalEl = router.bind(el, {
-    loading: () => <h1>Loading...</h1>,
+
+  const route = await router.bind(el, {
     error: (err) => <h1>Error: {err}</h1>,
   })
 
@@ -23,7 +21,7 @@ export default function App() {
         <a href="/todos">Todos</a>
         <a href="/foo">Other</a>
       </nav>
-      <div ref={el}>{initalEl}</div>
+      <div ref={el}>{route}</div>
     </div>
   )
 }

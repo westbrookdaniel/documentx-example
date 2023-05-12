@@ -4,7 +4,7 @@ import { hijackLinks } from './hijackLinks'
 import { Reference } from './ref'
 import { getTarget } from './getTarget'
 
-type Route = () => JSX.Element | Promise<JSX.Element>
+export type Route = () => JSX.Element | Promise<JSX.Element>
 
 /**
  * Create a router
@@ -74,14 +74,12 @@ export const createRouter = (routes: Record<string, Route>) => {
      * @param el The element where the route component will be rendered within
      * @returns The element for the initial route
      */
-    bind: (
+    bind: async (
       el: Reference | { target: HTMLElement },
-      options?: {
-        loading?: () => JSX.Element
-        error?: (err: unknown) => JSX.Element
+      options: {
+        error: (err: unknown) => JSX.Element
       }
     ) => {
-      const loading = options?.loading || (() => null)
       const error =
         options?.error ||
         ((err: unknown) => {
@@ -99,22 +97,7 @@ export const createRouter = (routes: Record<string, Route>) => {
         }
       })
 
-      const routeEl = router.currentMatch().component()
-
-      if (routeEl instanceof Promise) {
-        routeEl
-          .then((r) => render(r))
-          .then((children) => {
-            getTarget(el).replaceChildren?.(...children)
-          })
-          .catch(async (c) => {
-            const children = await render(error(c))
-            getTarget(el).replaceChildren?.(...children)
-          })
-        return loading()
-      } else {
-        return routeEl
-      }
+      return await router.currentMatch().component()
     },
   }
 
