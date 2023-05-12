@@ -7,7 +7,9 @@ import { createServer } from 'vite'
 import fetch from 'cross-fetch'
 global.fetch = fetch
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = process.env.NODE_ENV === 'development'
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 async function main() {
   const app = new express()
@@ -21,18 +23,24 @@ async function main() {
     })
   }
 
-  if (vite) app.use(vite.middlewares)
+  if (isDev) {
+    app.use(vite.middlewares)
+  } else {
+    app.use(express.static(__dirname))
+  }
 
   const mainModule = isDev
-    ? await import('./main.js')
-    : await vite.ssrLoadModule('/src/main.tsx')
+    ? await vite.ssrLoadModule('/src/main.tsx')
+    : await import(path.resolve(__dirname, './main.js'))
+
+  const manifest = isDev ? global.documentxssr : { css: [] }
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
 
     try {
       // send html
-      let html = fs.readFileSync('index.html', 'utf-8')
+      let html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8')
 
       if (isDev) html = await vite.transformIndexHtml(url, html)
 
@@ -47,7 +55,7 @@ async function main() {
       // inject head assets
       html = html.replace(
         '<!--head-->',
-        global.documentxssr.css
+        manifest.css
           .map((p) => `<link rel="stylesheet" href="${p}">`)
           .join('\n')
       )
