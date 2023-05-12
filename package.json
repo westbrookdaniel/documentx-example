@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=dev node index.js",
-    "build": "tsc && vite build && vite build --ssr && cp index.js dist",
-    "preview": "node dist"
+    "dev": "documentx-ssr dev",
+    "build": "documentx-ssr build",
+    "preview": "documentx-ssr preview"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
@@ -15,9 +15,8 @@
     "vite": "^4.3.5"
   },
   "dependencies": {
-    "cross-fetch": "^3.1.5",
     "documentx": "^0.5.1",
-    "express": "^4.18.2",
+    "documentx-ssr": "^0.1.0",
     "history": "^5.3.0"
   }
 }
