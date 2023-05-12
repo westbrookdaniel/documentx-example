@@ -90,8 +90,13 @@ export const createRouter = (routes: Record<string, Route>) => {
 
       history.listen(async () => {
         const route = router.currentMatch()
-        const children = await render(await route.component())
-        getTarget(el).replaceChildren?.(...children)
+        try {
+          const children = await render(await route.component())
+          getTarget(el).replaceChildren?.(...children)
+        } catch (c) {
+          const children = await render(error(c))
+          getTarget(el).replaceChildren?.(...children)
+        }
       })
 
       const routeEl = router.currentMatch().component()
