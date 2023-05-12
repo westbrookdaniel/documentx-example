@@ -1,9 +1,24 @@
-import type { Plugin, UserConfig, ViteDevServer } from 'vite'
+import type { Manifest, Plugin, UserConfig, ViteDevServer } from 'vite'
 import path from 'node:path'
 import url from 'node:url'
 import fs from 'node:fs'
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
+
+function createDevManifest() {
+  // e.g. { "index.html": { file: "src/pages/index.tsx" } }
+  // e.g. { "src/pages/index.tsx": { file: "src/pages/index.tsx" } }
+  const manifest: Manifest = {}
+
+  fs.readdirSync('./src/pages').forEach((file) => {
+    if (file.endsWith('.tsx')) {
+      const key = file.replace('.tsx', '')
+      manifest[key] = { file: `src/pages/${file}` }
+    }
+  })
+
+  return manifest
+}
 
 export default function documentxserver(): Plugin[] {
   return [
@@ -66,7 +81,13 @@ export default function documentxserver(): Plugin[] {
             }
           }
         }
-        return common
+        return {
+          ...common,
+          define: {
+            ...common.define,
+            MANIFEST: createDevManifest(),
+          },
+        }
       },
 
       configureServer(server) {
