@@ -1,12 +1,18 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  cross-fetch:
+    specifier: ^3.1.5
+    version: 3.1.5
   documentx:
     specifier: ^0.5.1
     version: 0.5.1
   documentx-ssr:
-    specifier: ^0.1.0
-    version: 0.1.0(documentx@0.5.1)(vite@4.3.5)
+    specifier: ^0.1.1
+    version: 0.1.1(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.5.1)(express@4.18.2)
+  express:
+    specifier: ^4.18.2
+    version: 4.18.2
   history:
     specifier: ^5.3.0
     version: 5.3.0
@@ -373,12 +379,13 @@ packages:
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
     dev: false
 
-  /documentx-ssr@0.1.0(documentx@0.5.1)(vite@4.3.5):
-    resolution: {integrity: sha512-Akk+mS2f/xdxVQGMU/R1pcmihII74Nx1bSx1KaKdivcjhLm0aloyAEpTWtW+NY8RiC+PBsZb5gb9iuhTGg3uLg==}
+  /documentx-ssr@0.1.1(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.5.1)(express@4.18.2):
+    resolution: {integrity: sha512-V6Td9YkUpVXBJRnvi4EE93vji6L9sSKDFIxanJ/taIkvwhDZ1sHOzoOjhI7eO8+lHZYWBJ8eKRoRgNMJBQS2Gw==}
     hasBin: true
     peerDependencies:
+      cross-fetch: ^3.1.5
       documentx: 0.5.1
-      vite: ^4.3.2
+      express: ^4.18.2
     dependencies:
       cac: 6.7.14
       cross-fetch: 3.1.5
@@ -386,8 +393,12 @@ packages:
       express: 4.18.2
       vite: 4.3.5(@types/node@18.16.8)
     transitivePeerDependencies:
-      - encoding
-      - supports-color
+      - '@types/node'
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - terser
     dev: false
 
   /documentx@0.5.1:
