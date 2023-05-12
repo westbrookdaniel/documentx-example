@@ -7,7 +7,7 @@ import { createServer } from 'vite'
 import fetch from 'cross-fetch'
 global.fetch = fetch
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'dev'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 

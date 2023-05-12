@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node main.js",
+    "dev": "NODE_ENV=dev node index.js",
     "build": "tsc && vite build && vite build --ssr && cp index.js dist",
     "preview": "node dist"
   },
