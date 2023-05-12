@@ -26,6 +26,8 @@ export default async function App() {
   )
 }
 
-render(<App />).then((children) => {
-  document.querySelector('#app')!.replaceChildren(...children)
-})
+if (typeof document !== 'undefined') {
+  render(<App />).then((children) => {
+    document.querySelector('#app')!.replaceChildren(...children)
+  })
+}

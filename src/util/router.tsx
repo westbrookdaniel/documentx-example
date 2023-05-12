@@ -6,6 +6,25 @@ import { getTarget } from './getTarget'
 
 export type Route = () => JSX.Element | Promise<JSX.Element>
 
+export type Router = {
+  history: History
+  currentMatch: () => {
+    component: Route
+    params: () => Record<string, string>
+  }
+  match: (path: string) => {
+    component: Route
+    params: () => Record<string, string>
+  }
+  params: () => Record<string, string>
+  bind: (
+    el: Reference | { target: HTMLElement },
+    options?: {
+      error: (err: unknown) => JSX.Element
+    }
+  ) => Promise<JSX.Element>
+}
+
 /**
  * Create a router
  * This router will hijack anchor tags and perform client-side routing
@@ -22,7 +41,7 @@ export type Route = () => JSX.Element | Promise<JSX.Element>
  *  '404': () => <h1>Not Found</h1>,
  * })
  */
-export const createRouter = (routes: Record<string, Route>) => {
+export const createRouter = (routes: Record<string, Route>): Router => {
   let history: History
 
   if (typeof document === 'undefined') {
@@ -32,7 +51,7 @@ export const createRouter = (routes: Record<string, Route>) => {
     hijackLinks(history)
   }
 
-  const router = {
+  const router: Router = {
     history,
     /**
      * Get the matching element for the current path
@@ -42,7 +61,7 @@ export const createRouter = (routes: Record<string, Route>) => {
      * Get the matching element for a given path
      * Handles 404s and dynamic routes
      */
-    match: (path: string) => {
+    match: (path) => {
       const foundRoute = Object.keys(routes).find((route) => {
         const routeParts = route.split('/')
         const pathParts = path.split('/')
@@ -74,12 +93,7 @@ export const createRouter = (routes: Record<string, Route>) => {
      * @param el The element where the route component will be rendered within
      * @returns The element for the initial route
      */
-    bind: async (
-      el: Reference | { target: HTMLElement },
-      options: {
-        error: (err: unknown) => JSX.Element
-      }
-    ) => {
+    bind: async (el, options) => {
       const error =
         options?.error ||
         ((err: unknown) => {
@@ -87,6 +101,7 @@ export const createRouter = (routes: Record<string, Route>) => {
         })
 
       history.listen(async () => {
+        if (typeof document === 'undefined') return
         const route = router.currentMatch()
         try {
           const children = await render(await route.component())
