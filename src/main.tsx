@@ -28,16 +28,6 @@ export default function App() {
   )
 }
 
-if (typeof document !== 'undefined') {
-  /**
-   * Things TODO:
-   *
-   * 1. Async components (Suspense)
-   * 2. Error boundaries
-   * 3. SSR
-   * 4. Hydration
-   */
-  render(<App />).then((children) => {
-    document.querySelector('#app')!.replaceChildren(...children)
-  })
-}
+render(<App />).then((children) => {
+  document.querySelector('#app')!.replaceChildren(...children)
+})
