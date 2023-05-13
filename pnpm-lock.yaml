@@ -8,8 +8,8 @@ dependencies:
     specifier: ^0.7.4
     version: 0.7.4
   documentx-ssr:
-    specifier: ^2.0.5
-    version: 2.0.5(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.4)(express@4.18.2)
+    specifier: ^2.0.6
+    version: 2.0.6(cross-fetch@3.1.5)(documentx@0.7.4)(express@4.18.2)(vite@4.3.5)
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -379,26 +379,20 @@ packages:
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
     dev: false
 
-  /documentx-ssr@2.0.5(@types/node@18.16.8)(cross-fetch@3.1.5)(documentx@0.7.4)(express@4.18.2):
-    resolution: {integrity: sha512-sGEJRj4WbeN9IcjgPQk5C2KvLaCXlpHYE8owC80EivNeU6hI7NFKA6aHzmrD1WXQlayioRXsTc+KO5sPDEGp+A==}
+  /documentx-ssr@2.0.6(cross-fetch@3.1.5)(documentx@0.7.4)(express@4.18.2)(vite@4.3.5):
+    resolution: {integrity: sha512-NjLyjETJK1unsEgrDtFYMDKEY2kfxrEVurMUARSdY0Wd/RQnS/T1U0XL/W9b07Yx4d9nA8/K8Qb9L3vBq13uQw==}
     hasBin: true
     peerDependencies:
       cross-fetch: ^3.1.5
       documentx: 0.7.4
       express: ^4.18.2
+      vite: ^4.3.2
     dependencies:
       cac: 6.7.14
       cross-fetch: 3.1.5
       documentx: 0.7.4
       express: 4.18.2
       vite: 4.3.5(@types/node@18.16.8)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - terser
     dev: false
 
   /documentx@0.7.4:
