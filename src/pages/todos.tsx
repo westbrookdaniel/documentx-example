@@ -1,5 +1,5 @@
 import { render } from 'documentx'
-import { Store, ref } from 'documentx/util'
+import { RenderClient, Store, ref } from 'documentx/util'
 
 type Todo = {
   id: number
@@ -53,7 +53,7 @@ export default function Todos() {
   }
 
   return (
-    <div>
+    <>
       <h1>Todos</h1>
       <form onSubmit={onSubmit}>
         <input type="text" name="todo" />
@@ -64,7 +64,7 @@ export default function Todos() {
         {/* Custom components with props */}
         <TodoItems todos={todos} />
       </main>
-    </div>
+    </>
   )
 }
 
@@ -83,7 +83,13 @@ const TodoItems = ({ todos }: { todos: Store<Todo[]> }) => {
               onChange={() => (todo.done = !todo.done)}
             />
             <span>{todo.text}</span>
-            <External id={todo.id} />
+            <RenderClient
+              fallback={
+                <span style="margin-left: 4px; color: #777">Loading</span>
+              }
+            >
+              <External id={todo.id} />
+            </RenderClient>
             <button
               onClick={() => {
                 return todos.set((s) => {
